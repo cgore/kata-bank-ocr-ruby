@@ -39,7 +39,8 @@ PROJECT_LIBDIR = PROJECT_TOPDIR + "/lib/"
 $:.unshift PROJECT_LIBDIR
 
 EXAMPLES_DIR = PROJECT_TOPDIR + "/examples/"
-def example_path(example)
+def example_path(use_case, example)
+  raise ArgumentError if not use_case.kind_of? Integer
   raise ArgumentError if not example.kind_of? String
-  "#{EXAMPLES_DIR}/#{example}"
+  "#{EXAMPLES_DIR}/use-case-#{use_case}/#{example}"
 end
