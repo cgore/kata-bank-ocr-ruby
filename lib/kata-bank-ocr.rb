@@ -35,6 +35,9 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 module KataBankOcr
+  class OcrFileFormatError < ArgumentError
+  end
+
   class OcrFile
     attr_reader :path
     attr_reader :file_lines
@@ -44,6 +47,13 @@ module KataBankOcr
       raise ArgumentError if not path.kind_of? String
       raise ArgumentError, "File #{path} DNE" if not File.exists? path
       @file_lines = File.new(path).readlines
+
+      ## XXX: This test fails on the examples: some are 27, some are 28.
+      # @file_lines.each do |line|
+      #   raise OcrFileFormatError, "Line length #{line.length} on line #{line}" if not line.length == 27+1
+      # end
+
+      
     end
   end
 

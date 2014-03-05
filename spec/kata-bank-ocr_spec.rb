@@ -43,6 +43,16 @@ describe OcrFile do
   it "can be instantiated" do
     OcrFile.new(example_path("123456789.ocr")).should be_a OcrFile
   end
+
+  describe :file_lines do
+    it "contains the file lines" do
+      @ocr_file = OcrFile.new example_path "123456789.ocr"
+      @ocr_file.file_lines.should be_an Array
+      @ocr_file.file_lines.each do |line|
+        line.should be_a String
+      end
+    end
+  end
 end
 
 describe Line do
