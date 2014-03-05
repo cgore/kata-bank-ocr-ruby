@@ -62,6 +62,13 @@ module KataBankOcr
 
     def initialize(*strings)
       @strings = strings
+      raise ArgumentError if not @strings.kind_of? Array
+      raise ArgumentError if @strings.length != 3
+      @strings.each do |string|
+        raise ArgumentError if not string.kind_of? String
+        raise ArgumentError if not string.length == 27
+      end
+      
     end
   end
 
@@ -71,5 +78,64 @@ module KataBankOcr
     def initialize(*strings)
       @strings = strings
     end
+
+    def == other
+      self.strings == other.strings
+    end
+
+    def is_digit? n
+      raise ArgumentError if not n.kind_of? Integer
+      raise ArgumentError if not (0..9).include? n
+      self == DIGITS[n]
+    end
+
+    def to_digit
+      (0..9).each do |n|
+        return n if is_digit? n
+      end
+      raise RuntimeError, "Not a valid digit"
+    end
   end
+
+  ZERO = Digit.new(
+    " _ ",
+    "| |",
+    "|_|")
+  ONE = Digit.new(
+    "   ",
+    "  |",
+    "  |")
+  TWO = Digit.new(
+    " _ ",
+    " _|",
+    "|_ ")
+  THREE = Digit.new(
+    " _ ",
+    " _|",
+    " _|")
+  FOUR = Digit.new(
+    "   ",
+    "|_|",
+    "  |")
+  FIVE = Digit.new(
+    " _ ",
+    "|_ ",
+    " _|")
+  SIX = Digit.new(
+    " _ ",
+    "|_ ",
+    "|_|")
+  SEVEN = Digit.new(
+    " _ ",
+    "  |",
+    "  |")
+  EIGHT = Digit.new(
+    " _ ",
+    "|_|",
+    "|_|")
+  NINE = Digit.new(
+    " _ ",
+    "|_|",
+    "  |")
+  DIGITS = [ZERO,ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE]
 end
