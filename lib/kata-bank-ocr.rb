@@ -35,6 +35,9 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 module KataBankOcr
+  class OcrFile
+  end
+
   class Line
   end
 

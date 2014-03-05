@@ -39,6 +39,12 @@ require 'spec_helper'
 require 'kata-bank-ocr'
 include KataBankOcr
 
+describe OcrFile do
+  it "can be instantiated" do
+    OcrFile.new.should be_a OcrFile
+  end
+end
+
 describe Line do
   it "can be instantiated" do
     Line.new.should be_a Line
