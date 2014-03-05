@@ -36,11 +36,30 @@
 
 module KataBankOcr
   class OcrFile
+    attr_reader :path
+    attr_reader :file_lines
+
+    def initialize(path)
+      @path = path
+      raise ArgumentError if not path.kind_of? String
+      raise ArgumentError, "File #{path} DNE" if not File.exists? path
+      @file_lines = File.new(path).readlines
+    end
   end
 
   class Line
+    attr_reader :strings
+
+    def initialize(*strings)
+      @strings = strings
+    end
   end
 
   class Digit
+    attr_reader :strings
+
+    def initialize(*strings)
+      @strings = strings
+    end
   end
 end

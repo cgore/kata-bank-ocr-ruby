@@ -41,18 +41,18 @@ include KataBankOcr
 
 describe OcrFile do
   it "can be instantiated" do
-    OcrFile.new.should be_a OcrFile
+    OcrFile.new(example_path("123456789.ocr")).should be_a OcrFile
   end
 end
 
 describe Line do
   it "can be instantiated" do
-    Line.new.should be_a Line
+    Line.new("123","456","789").should be_a Line
   end
 end
 
 describe Digit do
   it "can be instantiated" do
-    Digit.new.should be_a Digit
+    Digit.new("123","456","789").should be_a Digit
   end
 end

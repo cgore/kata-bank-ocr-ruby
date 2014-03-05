@@ -34,6 +34,12 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-PROJECT_TOPDIR = File.expand_path ".."
+PROJECT_TOPDIR = File.expand_path "."
 PROJECT_LIBDIR = PROJECT_TOPDIR + "/lib/"
 $:.unshift PROJECT_LIBDIR
+
+EXAMPLES_DIR = PROJECT_TOPDIR + "/examples/"
+def example_path(example)
+  raise ArgumentError if not example.kind_of? String
+  "#{EXAMPLES_DIR}/#{example}"
+end
