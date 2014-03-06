@@ -103,10 +103,7 @@ module KataBankOcr
       (0...NUMBER_OF_DIGITS).each do |i|
         start = i * Digit::WIDTH
         finish = start + Digit::WIDTH
-        digits.push Digit.new(
-          strings[0][start...finish],
-          strings[1][start...finish],
-          strings[2][start...finish])
+        digits.push Digit.new(*(0..2).map {|j| strings[j][start...finish]})
       end
     end
     private :split_out_digits
