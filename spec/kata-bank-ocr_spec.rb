@@ -122,8 +122,13 @@ describe Line do
   end
 
   describe :valid? do
-    it "returns true when the line passes the checksum"
-    it "returns false when the line fails the checksum"
+    it "returns true when the line passes the checksum" do
+      Line.new_from_number(457508000).should be_valid
+    end
+
+    it "returns false when the line fails the checksum" do
+      Line.new_from_number(664371495).should_not be_valid
+    end
   end
 end
 

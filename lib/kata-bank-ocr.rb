@@ -107,7 +107,7 @@ module KataBankOcr
     def checksum
       result = 0
       (0..9).each do |i|
-        result += digit.reverse[i] * (i+1)
+        result += digits.reverse[i].to_i * (i+1)
       end
       result % 11
     end
@@ -156,6 +156,10 @@ module KataBankOcr
         return n if is_digit? n
       end
       raise RuntimeError, "Not a valid digit"
+    end
+
+    def to_i
+      to_digit
     end
   end
 
