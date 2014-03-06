@@ -64,6 +64,10 @@ module KataBankOcr
       end
     end
     private :split_out_lines
+
+    def to_s
+      lines.map(&:to_s).join "\n"
+    end
   end
 
   class Line
@@ -116,9 +120,9 @@ module KataBankOcr
       if illegible?
         "#{digits.map(&:to_c).join} ILL"
       elsif invalid?
-        "#{to_i} ERR"
+        "%09d ERR" % to_i
       else
-        "#{to_i}"
+        "%09d" % to_i
       end
     end
 

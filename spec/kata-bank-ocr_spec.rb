@@ -79,6 +79,13 @@ describe OcrFile do
       @ocr_file.lines[10].to_i.should == 123456789
     end
   end
+
+  describe :to_s do
+    it "works with illegible inputs" do
+      @file_ex3 = OcrFile.new(example_path(3, "ex3.ocr"))
+      @file_ex3.to_s.should == ["000000051", "49006771? ILL", "1234?678? ILL"].join("\n")
+    end
+  end
 end
 
 describe Line do
