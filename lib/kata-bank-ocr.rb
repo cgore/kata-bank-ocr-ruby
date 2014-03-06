@@ -85,6 +85,15 @@ module KataBankOcr
       end
     end
     private :split_out_digits
+
+    def to_i
+      result = 0
+      digits.each do |digit|
+        result *= 10
+        result += digit.to_digit
+      end
+      result
+    end
   end
 
   class Digit

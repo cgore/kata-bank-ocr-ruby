@@ -82,6 +82,12 @@ describe Line do
       @line.digits[8].should == NINE
     end
   end
+
+  describe :to_i do
+    it "works" do
+      @line.to_i.should == 123456789
+    end
+  end
 end
 
 describe Digit do
