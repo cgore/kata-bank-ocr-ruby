@@ -115,6 +115,22 @@ module KataBankOcr
     def valid?
       checksum == 0
     end
+
+    def == other
+      self.digits == other.digits
+    end
+
+    class << self
+      def new_from_number(number)
+        raise ArgumentError if not number.kind_of? Integer
+        raise ArgumentError if not 0 <= number
+        digits = number.to_s.chars.map {|char| DIGITS[char.to_i]}
+        strings = (0..2).map do |i|
+          digits.map {|d| d.strings[i]}.join
+        end
+        Line.new *strings
+      end
+    end
   end
 
   class Digit

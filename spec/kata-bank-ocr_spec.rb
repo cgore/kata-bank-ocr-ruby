@@ -109,6 +109,12 @@ describe Line do
     end
   end
 
+  describe :new_from_number do
+    it "builds a new line from a number" do
+      Line.new_from_number(123456789).should == @line
+    end
+  end
+
   describe :to_i do
     it "works" do
       @line.to_i.should == 123456789
@@ -123,7 +129,7 @@ end
 
 describe Digit do
   it "can be instantiated" do
-    Digit.new("123","456","789").should be_a Digit
+    Digit.new(" _ ","| |","|_|").should be_a Digit
   end
 
   describe :== do
