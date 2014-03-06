@@ -95,6 +95,14 @@ module KataBankOcr
     end
     private :split_out_digits
 
+    def illegible?
+      digits.any? &:illegible?
+    end
+
+    def legible?
+      not illegible?
+    end
+
     def to_i
       result = 0
       digits.each do |digit|
@@ -102,6 +110,16 @@ module KataBankOcr
         result += digit.to_digit
       end
       result
+    end
+
+    def to_s
+      if illegible?
+        "#{digits.map(&:to_c).join} ILL"
+      elsif invalid?
+        "#{to_i} ERR"
+      else
+        "#{to_i}"
+      end
     end
 
     def checksum
@@ -116,19 +134,30 @@ module KataBankOcr
       checksum == 0
     end
 
+    def invalid?
+      not valid?
+    end
+
     def == other
       self.digits == other.digits
     end
 
     class << self
-      def new_from_number(number)
-        raise ArgumentError if not number.kind_of? Integer
-        raise ArgumentError if not 0 <= number
-        digits = number.to_s.chars.map {|char| DIGITS[char.to_i]}
+      def new_from_digits(*digits)
+        raise ArgumentError if not digits.kind_of? Array
+        digits.each do |digit|
+          raise ArgumentError if not digit.kind_of? Digit
+        end
         strings = (0..2).map do |i|
           digits.map {|d| d.strings[i]}.join
         end
         Line.new *strings
+      end
+
+      def new_from_number(number)
+        raise ArgumentError if not number.kind_of? Integer
+        raise ArgumentError if not 0 <= number
+        new_from_digits *number.to_s.chars.map {|char| DIGITS[char.to_i]}
       end
     end
   end
@@ -155,11 +184,27 @@ module KataBankOcr
       (0..9).each do |n|
         return n if is_digit? n
       end
-      raise RuntimeError, "Not a valid digit"
+      return nil # Illegible
     end
 
     def to_i
       to_digit
+    end
+
+    def legible?
+      to_digit != nil
+    end
+
+    def illegible?
+      not legible?
+    end
+
+    def to_c
+      if legible?
+        to_digit.to_s
+      else
+        "?"
+      end
     end
   end
 
@@ -204,4 +249,8 @@ module KataBankOcr
     "|_|",
     " _|")
   DIGITS = [ZERO,ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE]
+  ILLEGIBLE = Digit.new(
+    "!!!",
+    "!!!",
+    "!!!")
 end

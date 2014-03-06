@@ -109,6 +109,13 @@ describe Line do
     end
   end
 
+  describe :new_from_digits do
+    it "builds a new line from digits" do
+      Line.new_from_digits(ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE)
+        .to_i.should == 123456789
+    end
+  end
+
   describe :new_from_number do
     it "builds a new line from a number" do
       Line.new_from_number(123456789).should == @line
@@ -133,6 +140,10 @@ describe Line do
 end
 
 describe Digit do
+  before :all do
+    @illegible = Digit.new("abc","def","ghi")
+  end
+
   it "can be instantiated" do
     Digit.new(" _ ","| |","|_|").should be_a Digit
   end
@@ -159,6 +170,10 @@ describe Digit do
       EIGHT.should be_is_digit 8
       NINE.should be_is_digit 9
     end
+
+    it "handles illegible digits" do
+      @illegible.should_not be_is_digit 7
+    end
   end
 
   describe :to_digit do
@@ -173,6 +188,10 @@ describe Digit do
       SEVEN.to_digit.should == 7
       EIGHT.to_digit.should == 8
       NINE.to_digit.should == 9
+    end
+
+    it "returns nil on illegible" do
+      @illegible.to_digit.should be nil
     end
   end
 end
