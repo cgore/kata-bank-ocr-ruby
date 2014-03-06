@@ -87,6 +87,11 @@ describe Line do
       "    _  _     _  _  _  _  _  ",
       "  | _| _||_||_ |_   ||_||_| ",
       "  ||_  _|  | _||_|  ||_| _| ")
+    @valid_number = 457508000
+    @valid = Line.new_from_number @valid_number
+    @invalid_number = 664371495
+    @invalid = Line.new_from_number @invalid_number
+    @illegible = Line.new_from_digits ONE,TWO,THREE,FOUR,ILLEGIBLE,SIX,SEVEN,EIGHT,NINE
   end
 
   it "can be instantiated" do
@@ -128,13 +133,27 @@ describe Line do
     end
   end
 
+  describe :to_s do
+    it "works with valid input" do
+      @valid.to_s.should == "#{@valid_number}"
+    end
+
+    it "works with invalid input" do
+      @invalid.to_s.should == "#{@invalid_number} ERR"
+    end
+
+    it "works with illegible input" do
+      @illegible.to_s.should == "1234?6789 ILL"
+    end
+  end
+
   describe :valid? do
     it "returns true when the line passes the checksum" do
-      Line.new_from_number(457508000).should be_valid
+      @valid.should be_valid
     end
 
     it "returns false when the line fails the checksum" do
-      Line.new_from_number(664371495).should_not be_valid
+      @invalid.should_not be_valid
     end
   end
 end
