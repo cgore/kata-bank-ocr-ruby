@@ -58,6 +58,8 @@ module KataBankOcr
   end
 
   class Line
+    NUMBER_OF_DIGITS = 9
+    attr_reader :digits
     attr_reader :strings
 
     def initialize(*strings)
@@ -66,13 +68,27 @@ module KataBankOcr
       raise ArgumentError if @strings.length != 3
       @strings.each do |string|
         raise ArgumentError if not string.kind_of? String
-        raise ArgumentError if not string.length == 27
+        # raise ArgumentError if not string.length == 27
       end
-      
+      split_out_digits
     end
+
+    def split_out_digits
+      @digits = []
+      (0...NUMBER_OF_DIGITS).each do |i|
+        start = i * Digit::WIDTH
+        finish = start + Digit::WIDTH
+      digits.push Digit.new(
+        strings[0][start...finish],
+        strings[1][start...finish],
+        strings[2][start...finish])
+      end
+    end
+    private :split_out_digits
   end
 
   class Digit
+    WIDTH = 3
     attr_reader :strings
 
     def initialize(*strings)
@@ -136,6 +152,6 @@ module KataBankOcr
   NINE = Digit.new(
     " _ ",
     "|_|",
-    "  |")
+    " _|")
   DIGITS = [ZERO,ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE]
 end

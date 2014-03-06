@@ -56,8 +56,31 @@ describe OcrFile do
 end
 
 describe Line do
+  before :all do
+    @line = Line.new(
+      "    _  _     _  _  _  _  _  ",
+      "  | _| _||_||_ |_   ||_||_| ",
+      "  ||_  _|  | _||_|  ||_| _| ")
+  end
+
   it "can be instantiated" do
-    # Line.new("123","456","789").should be_a Line
+    @line.should be_a Line
+  end
+
+  describe :digits do
+    it "splits out the individual digits" do
+      @line.digits.should be_a Array
+      @line.digits.length.should == 9
+      @line.digits[0].should == ONE
+      @line.digits[1].should == TWO
+      @line.digits[2].should == THREE
+      @line.digits[3].should == FOUR
+      @line.digits[4].should == FIVE
+      @line.digits[5].should == SIX
+      @line.digits[6].should == SEVEN
+      @line.digits[7].should == EIGHT
+      @line.digits[8].should == NINE
+    end
   end
 end
 
