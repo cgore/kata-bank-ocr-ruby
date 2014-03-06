@@ -39,8 +39,9 @@ module KataBankOcr
   end
 
   class OcrFile
-    attr_reader :path
-    attr_reader :file_lines
+    attr_reader :lines # Line instances
+    attr_reader :path # Path to the text file.
+    attr_reader :file_lines # Strings from the text file.
 
     def initialize(path)
       @path = path
@@ -53,8 +54,16 @@ module KataBankOcr
       #   raise OcrFileFormatError, "Line length #{line.length} on line #{line}" if not line.length == 27+1
       # end
 
-      
+      split_out_lines
     end
+
+    def split_out_lines
+      @lines = []
+      @file_lines.each_slice(4) do |lines|
+        @lines.push Line.new(*lines[0..2])
+      end
+    end
+    private :split_out_lines
   end
 
   class Line
@@ -93,6 +102,18 @@ module KataBankOcr
         result += digit.to_digit
       end
       result
+    end
+
+    def checksum
+      result = 0
+      (0..9).each do |i|
+        result += digit.reverse[i] * (i+1)
+      end
+      result % 11
+    end
+
+    def valid?
+      checksum == 0
     end
   end
 

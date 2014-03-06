@@ -40,17 +40,43 @@ require 'kata-bank-ocr'
 include KataBankOcr
 
 describe OcrFile do
+  before :each do
+    @ocr_file = OcrFile.new(example_path(1, "many.ocr"))
+  end
+
   it "can be instantiated" do
-    OcrFile.new(example_path(1, "123456789.ocr")).should be_a OcrFile
+    @ocr_file.should be_a OcrFile
   end
 
   describe :file_lines do
-    it "contains the file lines" do
-      @ocr_file = OcrFile.new example_path 1, "123456789.ocr"
+    it "contains the text lines" do
       @ocr_file.file_lines.should be_an Array
-      @ocr_file.file_lines.each do |line|
-        line.should be_a String
+      @ocr_file.file_lines.each do |file_line|
+        file_line.should be_a String
       end
+    end
+  end
+
+  describe :lines do
+    it "contains the parsed lines" do
+      @ocr_file.lines.should be_an Array
+      @ocr_file.lines.each do |line|
+        line.should be_a Line
+      end
+    end
+
+    it "correctly splits the lines" do
+      @ocr_file.lines[0].to_i.should == 0
+      @ocr_file.lines[1].to_i.should == 111111111
+      @ocr_file.lines[2].to_i.should == 222222222
+      @ocr_file.lines[3].to_i.should == 333333333
+      @ocr_file.lines[4].to_i.should == 444444444
+      @ocr_file.lines[5].to_i.should == 555555555
+      @ocr_file.lines[6].to_i.should == 666666666
+      @ocr_file.lines[7].to_i.should == 777777777
+      @ocr_file.lines[8].to_i.should == 888888888
+      @ocr_file.lines[9].to_i.should == 999999999
+      @ocr_file.lines[10].to_i.should == 123456789
     end
   end
 end
@@ -87,6 +113,11 @@ describe Line do
     it "works" do
       @line.to_i.should == 123456789
     end
+  end
+
+  describe :valid? do
+    it "returns true when the line passes the checksum"
+    it "returns false when the line fails the checksum"
   end
 end
 
