@@ -68,6 +68,18 @@ module KataBankOcr
     def to_s
       lines.map(&:to_s).join "\n"
     end
+
+    def parsed_path
+      "#{path.split(".")[0...-1].join(".")}.parsed"
+    end
+
+    def write_parsed_file
+      File.open(parsed_path,"w") do |parsed_file|
+        lines.map(&:to_s).each do |s|
+          parsed_file.puts s
+        end
+      end
+    end
   end
 
   class Line
